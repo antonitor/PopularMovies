@@ -10,4 +10,9 @@
     <string name="pref_criteria_key">xprefcriteria</string>
     <string name="order_criteria_popular">popular</string>
     <string name="order_criteria_top_rated">top_rated</string>
+    <string name="error_message">Error</string>
+    <string name="no_network">Network not available</string>
+    <string name="error_while_loading">An error occurred while loading</string>
+    <string name="out_of_ten">/10</string>
+    <string name="movie_poster_cd">Movie poster</string>
 </resources>

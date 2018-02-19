@@ -1,7 +1,10 @@
 package com.tonietorres.popularmovies;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager;
@@ -13,6 +16,9 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.tonietorres.popularmovies.model.Movie;
 import com.tonietorres.popularmovies.utils.JsonUtils;
@@ -27,22 +33,28 @@ MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<
     private RecyclerView mRecyclerview;
     private static final int MOVIES_LOADER_ID = 1;
     private static boolean PREFERENCES_HAVE_BEEN_UPDATED = false;
-    private String mOrderCriteria;
+    private ProgressBar mLoadingIndicator;
+    private TextView mErrorMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mErrorMessage = findViewById(R.id.tv_error_message);
         mRecyclerview = (RecyclerView) findViewById(R.id.movies_recyclerview);
-        mMoviesAdapter = new MoviesAdapter(this, this);
-        GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
-        mRecyclerview.setLayoutManager(layoutManager);
-        mRecyclerview.setAdapter(mMoviesAdapter);
-
-        getSupportLoaderManager().initLoader(MOVIES_LOADER_ID, null, this);
-
-        PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
+        mRecyclerview.setHasFixedSize(true);
+        if (NetworkUtils.isOnline(this)) {
+            mMoviesAdapter = new MoviesAdapter(this, this);
+            GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
+            mRecyclerview.setLayoutManager(layoutManager);
+            mRecyclerview.setAdapter(mMoviesAdapter);
+            mLoadingIndicator = findViewById(R.id.pb_loading_indicator);
+            getSupportLoaderManager().initLoader(MOVIES_LOADER_ID, null, this);
+            PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
+        } else {
+            showErrorMessage(getString(R.string.no_network));
+        }
     }
 
     @Override
@@ -54,6 +66,7 @@ MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<
             @Override
             protected void onStartLoading() {
                 if (mMovieList == null) {
+                    mLoadingIndicator.setVisibility(View.VISIBLE);
                     forceLoad();
                 } else {
                     deliverResult(mMovieList);
@@ -76,10 +89,12 @@ MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<
 
     @Override
     public void onLoadFinished(Loader<List<Movie>> loader, List<Movie> movieList) {
+        mLoadingIndicator.setVisibility(View.INVISIBLE);
         if (movieList != null) {
             mMoviesAdapter.swapDataSet(movieList);
+            showMovies();
         } else {
-            Log.d("EPPPP", "posters null");
+            showErrorMessage(getString(R.string.error_while_loading));
         }
     }
 
@@ -132,6 +147,18 @@ MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<
         } else {
             return getString(R.string.order_criteria_top_rated);
         }
+    }
+
+    private void showMovies() {
+        mErrorMessage.setVisibility(View.INVISIBLE);
+        mRecyclerview.setVisibility(View.VISIBLE);
+    }
+
+
+    private void showErrorMessage(String message) {
+        mErrorMessage.setText(message);
+        mRecyclerview.setVisibility(View.INVISIBLE);
+        mErrorMessage.setVisibility(View.VISIBLE);
     }
 
     @Override

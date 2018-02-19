@@ -20,7 +20,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
         Preference preference = findPreference(s);
-        if (s.equals(R.string.pref_criteria_key)){
+        if (s.equals(getString(R.string.pref_criteria_key))){
             preference.setSummary(((ListPreference)preference).getEntry());
         }
     }

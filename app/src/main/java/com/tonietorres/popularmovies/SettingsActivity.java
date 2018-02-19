@@ -2,7 +2,6 @@ package com.tonietorres.popularmovies;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.preference.AndroidResources;
 import android.view.MenuItem;
 
 public class SettingsActivity extends AppCompatActivity {

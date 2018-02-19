@@ -1,5 +1,8 @@
 package com.tonietorres.popularmovies.utils;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.util.Log;
 
@@ -21,11 +24,9 @@ public class NetworkUtils {
     private static final String TAG = NetworkUtils.class.getSimpleName();
 
     private static final String POSTER_BASE_URL =  "http://image.tmdb.org/t/p/";
-    private static final String POSTER_SIZE = "w342";
+    private static final String POSTER_SIZE = "w185";
     private static final String MOVIES_URL = "http://api.themoviedb.org/3/movie/";
     private static final String API_KEY = BuildConfig.API_KEY;
-    public static final String MOST_POPULAR = "popular";
-    public static final String TOP_RATED = "top_rated";
     private static final String API_KEY_QUERY = "api_key";
 
     public static String fetchMovies(String criteria){
@@ -68,7 +69,7 @@ public class NetworkUtils {
         return POSTER_BASE_URL + POSTER_SIZE + relativePath;
     }
 
-    public static String getResponseFromHttpUrl(URL url) throws IOException {
+    private static String getResponseFromHttpUrl(URL url) throws IOException {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         try {
             InputStream in = urlConnection.getInputStream();
@@ -88,7 +89,11 @@ public class NetworkUtils {
         }
     }
 
-
+    public static boolean isOnline(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
 
 
 }
