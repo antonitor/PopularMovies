@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Popular Movies</string>
+    <string name="settings_menu_title">Settings</string>
+
+    <string name="pref_popular_key" translatable="false">xpopular</string>
+    <string name="pref_top_rated_key" translatable="false">xtoprated</string>
+    <string name="pref_popular_label">Most popular</string>
+    <string name="pref_top_rated_label">Top rated</string>
+    <string name="pref_criteria_label">Order Criteria</string>
+    <string name="pref_criteria_key">xprefcriteria</string>
+    <string name="order_criteria_popular">popular</string>
+    <string name="order_criteria_top_rated">top_rated</string>
 </resources>

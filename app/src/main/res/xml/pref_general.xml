@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <ListPreference
+        android:defaultValue="@string/pref_popular_key"
+        android:title="@string/pref_criteria_label"
+        android:entryValues="@array/pref_criteria_keys"
+        android:entries="@array/pref_criteria_labels"
+        android:summary="%s"
+        android:key="@string/pref_criteria_key"/>
+</PreferenceScreen>

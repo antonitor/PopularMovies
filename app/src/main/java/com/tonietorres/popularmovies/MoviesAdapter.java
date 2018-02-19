@@ -20,9 +20,15 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesAdap
 
     private List<Movie> mMoviesDataSet;
     private Context mContext;
+    final private MovieClickListener mMovieClickListener;
 
-    public MoviesAdapter(Context mContext) {
+    public MoviesAdapter(Context mContext, MovieClickListener clickListener ) {
         this.mContext = mContext;
+        this.mMovieClickListener = clickListener;
+    }
+
+    public interface MovieClickListener{
+        void onMovieClick(String id);
     }
 
 
@@ -53,13 +59,20 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MoviesAdap
         notifyDataSetChanged();
     }
 
-    class MoviesAdapterViewHolder extends RecyclerView.ViewHolder {
+    class MoviesAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         final ImageView poster;
 
         public MoviesAdapterViewHolder(View itemView) {
             super(itemView);
             this.poster = (ImageView) itemView.findViewById(R.id.poster_image_view);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            String id = mMoviesDataSet.get(getAdapterPosition()).getId();
+            mMovieClickListener.onMovieClick(id);
         }
     }
 }
