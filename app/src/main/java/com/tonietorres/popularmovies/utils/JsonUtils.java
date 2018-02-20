@@ -24,6 +24,8 @@ public class JsonUtils {
     private final static String RATING = "vote_average";
     private final static String RELEASE_DATE = "release_date";
 
+    private JsonUtils(){}
+
     public static List<Movie> getMovieList(String json) {
         if (json == null)
             return null;
