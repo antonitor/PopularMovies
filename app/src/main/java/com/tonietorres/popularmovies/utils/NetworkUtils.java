@@ -29,6 +29,8 @@ public class NetworkUtils {
     private static final String API_KEY = BuildConfig.API_KEY;
     private static final String API_KEY_QUERY = "api_key";
 
+    private NetworkUtils(){}
+
     public static String fetchMovies(String criteria){
         String json = null;
         Uri buildUri = Uri.parse(MOVIES_URL).buildUpon()
