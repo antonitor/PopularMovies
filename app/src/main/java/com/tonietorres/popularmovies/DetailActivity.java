@@ -3,21 +3,17 @@ package com.tonietorres.popularmovies;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-
 import com.squareup.picasso.Picasso;
 import com.tonietorres.popularmovies.data.MoviesContract;
 import com.tonietorres.popularmovies.data.MoviesContract.MovieEntry;
+import com.tonietorres.popularmovies.databinding.ActivityDetailBinding;
 import com.tonietorres.popularmovies.model.Movie;
 import com.tonietorres.popularmovies.model.Review;
 import com.tonietorres.popularmovies.model.Video;
@@ -31,23 +27,8 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
     private Movie mMovie;
     private boolean mFavoriteFlag = false;
-
     private static final int MOVIE_DETAIL_LOADER_ID = 2;
-    private ImageView mPosterView;
-    private TextView mReleaseDateTV;
-    private TextView mRatingTV;
-    private ImageButton mFavoriteButton;
-    private TextView mOverviewTV;
-    private TextView mTitleTV;
-    private ProgressBar mProgressBar;
-    private TextView mErrorMessage;
-    private ListView mVideoList;
-    private ListView mReviewList;
-    private TextView mVideoLabel;
-    private TextView mReviewLabel;
-    private View separator1;
-    private View separator2;
-
+    private ActivityDetailBinding mBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,20 +40,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             mFavoriteFlag = savedInstanceState.getBoolean(getString(R.string.detail_activity_saved_instance_state_fav));
         }
 
-        mErrorMessage = findViewById(R.id.detail_error_message);
-        mPosterView = findViewById(R.id.poster_detail);
-        mReleaseDateTV = findViewById(R.id.release_date);
-        mRatingTV = findViewById(R.id.rating);
-        mOverviewTV = findViewById(R.id.overview);
-        mTitleTV = findViewById(R.id.title_tv);
-        mProgressBar = findViewById(R.id.pb_detail);
-        mVideoList = findViewById(R.id.video_list);
-        mReviewList = findViewById(R.id.review_list);
-        mVideoLabel = findViewById(R.id.videos_label);
-        mReviewLabel = findViewById(R.id.reviews_label);
-        separator1 = findViewById(R.id.separator_videos);
-        separator2 = findViewById(R.id.separator_reviews);
-        mFavoriteButton = findViewById(R.id.fav_button);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_detail);
 
         if (NetworkUtils.isOnline(this)) {
             Bundle bundle = new Bundle();
@@ -90,7 +58,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             @Override
             protected void onStartLoading() {
                 if (mMovie == null) {
-                    mProgressBar.setVisibility(View.VISIBLE);
+                    mBinding.pbDetail.setVisibility(View.VISIBLE);
                     forceLoad();
                 } else {
                     deliverResult(mMovie);
@@ -125,25 +93,25 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
     @Override
     public void onLoadFinished(Loader<Movie> loader, Movie data) {
-        mProgressBar.setVisibility(View.INVISIBLE);
+        mBinding.pbDetail.setVisibility(View.INVISIBLE);
         if (data == null) {
             showErrorMessage(getString(R.string.error_message));
         } else {
             Picasso.with(this)
                     .load(data.getPoster_path())
-                    .into(mPosterView);
-            mReleaseDateTV.setText(data.getRelease_date());
-            mRatingTV.setText(data.getVote_average());
-            mRatingTV.append(getString(R.string.out_of_ten));
-            mOverviewTV.setText(data.getOverview());
-            mTitleTV.setText(data.getOriginal_title());
+                    .into(mBinding.posterDetail);
+            mBinding.releaseDate.setText(data.getRelease_date());
+            mBinding.rating.setText(data.getVote_average());
+            mBinding.rating.append(getString(R.string.out_of_ten));
+            mBinding.overview.setText(data.getOverview());
+            mBinding.titleTv.setText(data.getOriginal_title());
             showMovieDetails();
 
             VideoListAdapter videoAdapter = new VideoListAdapter(this, (ArrayList) data.getVideos());
-            mVideoList.setAdapter(videoAdapter);
+            mBinding.videoList.setAdapter(videoAdapter);
 
             ReviewListAdapter reviewAdapter = new ReviewListAdapter(this, (ArrayList) data.getReviews());
-            mReviewList.setAdapter(reviewAdapter);
+            mBinding.reviewList.setAdapter(reviewAdapter);
 
             setFavoriteFlag();
         }
@@ -202,42 +170,42 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
      */
     private void setFavoriteButtonImage(){
         if (mFavoriteFlag) {
-            mFavoriteButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_fav));
+            mBinding.favButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_fav));
         } else {
-            mFavoriteButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_no_fav));
+            mBinding.favButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_no_fav));
         }
     }
 
     private void showErrorMessage(String message) {
-        mPosterView.setVisibility(View.INVISIBLE);
-        mReleaseDateTV.setVisibility(View.INVISIBLE);
-        mRatingTV.setVisibility(View.INVISIBLE);
-        mOverviewTV.setVisibility(View.INVISIBLE);
-        mTitleTV.setVisibility(View.INVISIBLE);
-        mFavoriteButton.setVisibility(View.INVISIBLE);
-        mVideoLabel.setVisibility(View.INVISIBLE);
-        mReviewLabel.setVisibility(View.INVISIBLE);
-        separator1.setVisibility(View.INVISIBLE);
-        separator2.setVisibility(View.INVISIBLE);
+        mBinding.posterDetail.setVisibility(View.INVISIBLE);
+        mBinding.releaseDate.setVisibility(View.INVISIBLE);
+        mBinding.rating.setVisibility(View.INVISIBLE);
+        mBinding.overview.setVisibility(View.INVISIBLE);
+        mBinding.titleTv.setVisibility(View.INVISIBLE);
+        mBinding.favButton.setVisibility(View.INVISIBLE);
+        mBinding.videosLabel.setVisibility(View.INVISIBLE);
+        mBinding.reviewsLabel.setVisibility(View.INVISIBLE);
+        mBinding.separatorReviews.setVisibility(View.INVISIBLE);
+        mBinding.separatorVideos.setVisibility(View.INVISIBLE);
 
-        mErrorMessage.setText(message);
-        mErrorMessage.setVisibility(View.VISIBLE);
+        mBinding.detailErrorMessage.setText(message);
+        mBinding.detailErrorMessage.setVisibility(View.VISIBLE);
 
     }
 
     private void showMovieDetails() {
-        mErrorMessage.setVisibility(View.INVISIBLE);
+        mBinding.detailErrorMessage.setVisibility(View.INVISIBLE);
 
-        mPosterView.setVisibility(View.VISIBLE);
-        mReleaseDateTV.setVisibility(View.VISIBLE);
-        mRatingTV.setVisibility(View.VISIBLE);
-        mOverviewTV.setVisibility(View.VISIBLE);
-        mTitleTV.setVisibility(View.VISIBLE);
-        mVideoLabel.setVisibility(View.VISIBLE);
-        mReviewLabel.setVisibility(View.VISIBLE);
-        mFavoriteButton.setVisibility(View.VISIBLE);
-        separator1.setVisibility(View.VISIBLE);
-        separator2.setVisibility(View.VISIBLE);
+        mBinding.posterDetail.setVisibility(View.VISIBLE);
+        mBinding.releaseDate.setVisibility(View.VISIBLE);
+        mBinding.rating.setVisibility(View.VISIBLE);
+        mBinding.overview.setVisibility(View.VISIBLE);
+        mBinding.titleTv.setVisibility(View.VISIBLE);
+        mBinding.favButton.setVisibility(View.VISIBLE);
+        mBinding.videosLabel.setVisibility(View.VISIBLE);
+        mBinding.reviewsLabel.setVisibility(View.VISIBLE);
+        mBinding.separatorReviews.setVisibility(View.VISIBLE);
+        mBinding.separatorVideos.setVisibility(View.VISIBLE);
     }
 
 
