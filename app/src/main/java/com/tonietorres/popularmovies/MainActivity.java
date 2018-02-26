@@ -1,10 +1,9 @@
 package com.tonietorres.popularmovies;
 
-import android.content.Context;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager;
@@ -13,17 +12,18 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.tonietorres.popularmovies.data.MoviesContract;
 import com.tonietorres.popularmovies.model.Movie;
 import com.tonietorres.popularmovies.utils.JsonUtils;
 import com.tonietorres.popularmovies.utils.NetworkUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class
@@ -53,7 +53,7 @@ MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<
             getSupportLoaderManager().initLoader(MOVIES_LOADER_ID, null, this);
             PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
         } else {
-            showErrorMessage(getString(R.string.no_network));
+            showErrorMessage();
         }
     }
 
@@ -75,8 +75,13 @@ MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<
 
             @Override
             public List<Movie> loadInBackground() {
-                String jsonMovieList = NetworkUtils.fetchMovies(getPreferredOrderCriteria());
-                return JsonUtils.getMovieList(jsonMovieList);
+                String criteria = getPreferredOrderCriteria();
+                if (criteria.equals(getString(R.string.pref_favorite_key))) {
+                    return loadFavoriteMovies();
+                } else {
+                    String jsonMovieList = NetworkUtils.fetchMovies(criteria);
+                    return JsonUtils.getMovieList(jsonMovieList);
+                }
             }
 
             @Override
@@ -94,7 +99,7 @@ MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<
             mMoviesAdapter.swapDataSet(movieList);
             showMovies();
         } else {
-            showErrorMessage(getString(R.string.error_while_loading));
+            showErrorMessage();
         }
     }
 
@@ -106,9 +111,17 @@ MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<
     @Override
     public void onMovieClick(String id) {
         Intent intent = new Intent(this, DetailActivity.class);
-        Log.d("MOVIE ID: ", id);
-        intent.putExtra(Intent.EXTRA_INDEX, id);
-        startActivity(intent);
+        intent.putExtra(getString(R.string.extra_movie_id), id);
+        startActivityForResult(intent, 1);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == 1) {
+            if (resultCode == RESULT_OK){
+                getSupportLoaderManager().restartLoader(MOVIES_LOADER_ID, null, this);
+            }
+        }
     }
 
     @Override
@@ -144,8 +157,28 @@ MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<
         String orderCriteria = prefs.getString(getString(R.string.pref_criteria_key), getString(R.string.pref_popular_key));
         if (orderCriteria.equals(getString(R.string.pref_popular_key))) {
             return getString(R.string.order_criteria_popular);
-        } else {
+        } else if (orderCriteria.equals(getString(R.string.pref_top_rated_key))){
             return getString(R.string.order_criteria_top_rated);
+        } else {
+            return getString(R.string.pref_favorite_key);
+        }
+    }
+
+    private List<Movie> loadFavoriteMovies(){
+        ContentResolver resolver = getContentResolver();
+        Cursor cursor = resolver.query(MoviesContract.MovieEntry.CONTENT_URI,null,null,null,null);
+        if (cursor!= null && cursor.moveToFirst()) {
+            List<Movie> movieList = new ArrayList<>();
+            do {
+                String id = cursor.getString(cursor.getColumnIndex(MoviesContract.MovieEntry.COLUMN_MOVIE_ID));
+                String title =  cursor.getString(cursor.getColumnIndex(MoviesContract.MovieEntry.COLUMN_TITLE));
+                String poster_path =  cursor.getString(cursor.getColumnIndex(MoviesContract.MovieEntry.COLUMN_POSTER_PATH));
+                movieList.add(new Movie(id, title, null,poster_path,null,null,null));
+            } while(cursor.moveToNext());
+            cursor.close();
+            return movieList;
+        } else {
+            return null;
         }
     }
 
@@ -155,8 +188,14 @@ MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<
     }
 
 
-    private void showErrorMessage(String message) {
-        mErrorMessage.setText(message);
+    private void showErrorMessage() {
+        if (!NetworkUtils.isOnline(this)) {
+            mErrorMessage.setText(getString(R.string.no_network));
+        } else if (getPreferredOrderCriteria().equals(getString(R.string.pref_favorite_key))) {
+            mErrorMessage.setText(getString(R.string.no_favorites_added));
+        } else {
+            mErrorMessage.setText(getString(R.string.error_while_loading));
+        }
         mRecyclerview.setVisibility(View.INVISIBLE);
         mErrorMessage.setVisibility(View.VISIBLE);
     }

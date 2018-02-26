@@ -1,125 +1,204 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.tonietorres.popularmovies.DetailActivity">
 
-    <ScrollView
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="30dp">
+        android:paddingBottom="20dp"
+        android:descendantFocusability="blocksDescendants">
 
-        <android.support.constraint.ConstraintLayout
+        <TextView
+            android:id="@+id/title_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="30dp">
+            android:background="@color/colorPrimaryDark"
+            android:gravity="start|fill_vertical"
+            android:paddingBottom="40dp"
+            android:paddingEnd="20dp"
+            android:paddingStart="20dp"
+            android:paddingTop="40dp"
+            android:textColor="@android:color/background_light"
+            android:textSize="28sp"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Minions" />
 
-            <ImageView
-                android:id="@+id/poster_detail"
-                android:layout_width="188dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:adjustViewBounds="true"
-                android:contentDescription="@string/movie_poster_cd"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
+        <ImageView
+            android:id="@+id/poster_detail"
+            android:layout_width="188dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/movie_poster_cd"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title_tv" />
 
-            <TextView
-                android:id="@+id/rating"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:textAppearance="@style/TextAppearance.AppCompat"
-                android:textSize="18sp"
-                app:layout_constraintStart_toStartOf="@+id/release_date"
-                app:layout_constraintTop_toBottomOf="@+id/release_date"
-                tools:text="8.1/10" />
 
-            <TextView
-                android:id="@+id/overview"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/poster_detail"
-                tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." />
+        <TextView
+            android:id="@+id/release_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:textSize="24sp"
+            app:layout_constraintStart_toEndOf="@+id/poster_detail"
+            app:layout_constraintTop_toTopOf="@+id/poster_detail"
+            tools:text="2015" />
 
-            <TextView
-                android:id="@+id/release_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="24dp"
-                android:layout_marginStart="24dp"
-                android:textSize="24sp"
-                app:layout_constraintStart_toEndOf="@+id/poster_detail"
-                app:layout_constraintTop_toTopOf="@+id/poster_detail"
-                tools:text="2015" />
+        <TextView
+            android:id="@+id/rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="@+id/release_date"
+            app:layout_constraintTop_toBottomOf="@+id/release_date"
+            tools:text="8.1/10" />
 
-            <FrameLayout
-                android:id="@+id/frameLayout"
-                android:layout_width="0dp"
-                android:layout_height="140dp"
-                android:background="@color/colorPrimaryDark"
-                android:visibility="invisible"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
+        <ImageButton
+            android:id="@+id/fav_button"
+            android:layout_width="42dp"
+            android:layout_height="38dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:background="@android:drawable/screen_background_light_transparent"
+            android:visibility="invisible"
+            app:layout_constraintStart_toEndOf="@+id/poster_detail"
+            app:layout_constraintTop_toBottomOf="@+id/rating"
+            app:srcCompat="@drawable/ic_no_fav"
+            android:onClick="onFavoriteButtonPressed"/>
 
-                <TextView
-                    android:id="@+id/title_tv"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="left|fill_vertical"
-                    android:paddingEnd="20dp"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
-                    android:paddingStart="20dp"
-                    android:textColor="@android:color/background_light"
-                    android:textSize="28sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="Minions" />
 
-            </FrameLayout>
+        <TextView
+            android:id="@+id/overview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/poster_detail"
+            tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." />
 
-            <ProgressBar
-                android:id="@+id/pb_detail"
-                style="?android:attr/progressBarStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:visibility="invisible"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+        <ProgressBar
+            android:id="@+id/pb_detail"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/detail_error_message"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:textAlignment="center"
-                android:visibility="invisible"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="ERROR" />
+        <TextView
+            android:id="@+id/detail_error_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="260dp"
+            android:textAlignment="center"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="ERROR" />
 
-        </android.support.constraint.ConstraintLayout>
-    </ScrollView>
-</android.support.constraint.ConstraintLayout>
+        <View
+            android:id="@+id/separator_videos"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@android:color/darker_gray"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/overview" />
+
+        <TextView
+            android:id="@+id/videos_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:text="@string/videos_label"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/separator_videos"
+            app:layout_constraintTop_toBottomOf="@+id/separator_videos" />
+
+
+        <com.tonietorres.popularmovies.utils.NonScrollListView
+            android:id="@+id/video_list"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/videos_label" />
+
+
+        <View
+            android:id="@+id/separator_reviews"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@android:color/darker_gray"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/video_list" />
+
+        <TextView
+            android:id="@+id/reviews_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:text="@string/user_reviews_tv"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/video_list"
+            app:layout_constraintTop_toBottomOf="@+id/separator_reviews" />
+
+        <com.tonietorres.popularmovies.utils.NonScrollListView
+            android:id="@+id/review_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/reviews_label" />
+
+
+
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.v4.widget.NestedScrollView>

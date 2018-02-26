@@ -1,10 +1,17 @@
 package com.tonietorres.popularmovies.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Toni on 16/02/2018.
  */
 
-public class Movie {
+public class Movie implements Parcelable {
     private String id;
     private String title;
     private String original_title;
@@ -12,6 +19,8 @@ public class Movie {
     private String overview;
     private String vote_average;
     private String release_date;
+    private List<Video> videos;
+    private List<Review> reviews;
 
     public Movie(String id, String title, String original_title, String poster_path, String overview, String vote_average, String release_date) {
         this.id = id;
@@ -23,13 +32,33 @@ public class Movie {
         this.release_date = release_date;
     }
 
+    protected Movie(Parcel in) {
+        id = in.readString();
+        title = in.readString();
+        original_title = in.readString();
+        poster_path = in.readString();
+        overview = in.readString();
+        vote_average = in.readString();
+        release_date = in.readString();
+    }
+
+    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
+        @Override
+        public Movie createFromParcel(Parcel in) {
+            return new Movie(in);
+        }
+
+        @Override
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
+
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
+    public void setId(String id) { this.id = id; }
 
     public String getTitle() {
         return title;
@@ -77,5 +106,29 @@ public class Movie {
 
     public void setRelease_date(String release_date) {
         this.release_date = release_date;
+    }
+
+    public List<Video> getVideos() { return videos; }
+
+    public void setVideos(List<Video> videos) { this.videos = videos; }
+
+    public List<Review> getReviews() { return reviews; }
+
+    public void setReviews(List<Review> reviews) { this.reviews = reviews; }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(id);
+        parcel.writeString(title);
+        parcel.writeString(original_title);
+        parcel.writeString(poster_path);
+        parcel.writeString(overview);
+        parcel.writeString(vote_average);
+        parcel.writeString(release_date);
     }
 }

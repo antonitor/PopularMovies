@@ -28,6 +28,8 @@ public class NetworkUtils {
     private static final String MOVIES_URL = "http://api.themoviedb.org/3/movie/";
     private static final String API_KEY = BuildConfig.API_KEY;
     private static final String API_KEY_QUERY = "api_key";
+    private static final String VIDEOS = "videos";
+    private static final String REVIEWS = "reviews";
 
     private NetworkUtils(){}
 
@@ -53,6 +55,44 @@ public class NetworkUtils {
         String json = null;
         Uri buildUri = Uri.parse(MOVIES_URL).buildUpon()
                 .appendPath(id)
+                .appendQueryParameter(API_KEY_QUERY,API_KEY)
+                .build();
+        Log.d(TAG," - url: " + buildUri.toString());
+        try {
+            URL url = new URL(buildUri.toString());
+            json = getResponseFromHttpUrl(url);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return json;
+    }
+
+    public static String fetchVideosByMovieId(String id) {
+        String json = null;
+        Uri buildUri = Uri.parse(MOVIES_URL).buildUpon()
+                .appendPath(id)
+                .appendPath(VIDEOS)
+                .appendQueryParameter(API_KEY_QUERY,API_KEY)
+                .build();
+        Log.d(TAG," - url: " + buildUri.toString());
+        try {
+            URL url = new URL(buildUri.toString());
+            json = getResponseFromHttpUrl(url);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return json;
+    }
+
+    public static String fetchReviewsByMovieId(String id) {
+        String json = null;
+        Uri buildUri = Uri.parse(MOVIES_URL).buildUpon()
+                .appendPath(id)
+                .appendPath(REVIEWS)
                 .appendQueryParameter(API_KEY_QUERY,API_KEY)
                 .build();
         Log.d(TAG," - url: " + buildUri.toString());
