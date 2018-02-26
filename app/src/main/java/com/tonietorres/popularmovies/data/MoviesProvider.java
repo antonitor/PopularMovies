@@ -9,7 +9,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 /**
- * Created by Toni on 25/02/2018.
+ * This ContentProvider allows the query of the set of records, a single record, and insertion and
+ * deletion of a record.
  */
 
 public class MoviesProvider extends ContentProvider {

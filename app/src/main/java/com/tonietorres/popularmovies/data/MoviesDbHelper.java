@@ -5,9 +5,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import com.tonietorres.popularmovies.data.MoviesContract.MovieEntry;
 
-/**
- * Created by Toni on 25/02/2018.
- */
 
 public class MoviesDbHelper extends SQLiteOpenHelper {
 

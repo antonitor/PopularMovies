@@ -43,8 +43,6 @@ public class NetworkUtils {
         try {
             URL url = new URL(buildUri.toString());
             json = getResponseFromHttpUrl(url);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -61,8 +59,6 @@ public class NetworkUtils {
         try {
             URL url = new URL(buildUri.toString());
             json = getResponseFromHttpUrl(url);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -80,8 +76,6 @@ public class NetworkUtils {
         try {
             URL url = new URL(buildUri.toString());
             json = getResponseFromHttpUrl(url);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -99,8 +93,6 @@ public class NetworkUtils {
         try {
             URL url = new URL(buildUri.toString());
             json = getResponseFromHttpUrl(url);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }

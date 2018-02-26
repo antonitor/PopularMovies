@@ -1,32 +1,42 @@
 <resources>
     <string name="app_name">Popular Movies</string>
     <string name="settings_menu_title">Settings</string>
+    <string name="content_authority" translatable="false">com.tonietorres.popularmovies</string>
+    <string name="user_reviews_tv">User Reviews:</string>
+    <string name="videos_label">Videos:</string>
 
-    <string name="pref_popular_key" translatable="false">xpopular</string>
-    <string name="pref_top_rated_key" translatable="false">xtoprated</string>
-    <string name="pref_popular_label">Most popular</string>
-    <string name="pref_top_rated_label">Top rated</string>
+    <!-- SETTINGS -->
     <string name="pref_criteria_label">Order Criteria</string>
-    <string name="pref_criteria_key">xprefcriteria</string>
-    <string name="order_criteria_popular">popular</string>
-    <string name="order_criteria_top_rated">top_rated</string>
+    <string name="pref_criteria_key" translatable="false">xprefcriteria</string>
+    <string name="pref_popular_label">Most popular</string>
+    <string name="pref_popular_key" translatable="false">xpopular</string>
+    <string name="pref_top_rated_label">Top rated</string>
+    <string name="pref_top_rated_key" translatable="false">xtoprated</string>
+    <string name="pref_favorite_label">Favorite</string>
+    <string name="pref_favorite_key" translatable="false">xfavorite</string>
+
+    <!-- BUNDLE EXTRAS -->
+    <string name="detail_activity_saved_instance_state_fav" translatable="false">favorite_bundle_extra</string>
+    <string name="detail_activity_saved_instance_state_movie" translatable="false">movie_bundle_extra</string>
+    <string name="order_criteria_popular" translatable="false">popular</string>
+    <string name="order_criteria_top_rated" translatable="false">top_rated</string>
+    <string name="extra_movie_id" translatable="false">extra_movie_id</string>
+
+    <!-- CONTENT DESCRIPTION -->
+    <string name="favorite_button_cd">Favorite Button</string>
+    <string name="movie_poster_cd">Movie poster</string>
+    <string name="movie_trailer_cd">Movie Trailer</string>
+
+    <!-- MESSAGES -->
     <string name="error_message">Error</string>
     <string name="no_network">Network not available</string>
     <string name="error_while_loading">An error occurred while loading</string>
     <string name="out_of_ten">/10</string>
-    <string name="movie_poster_cd">Movie poster</string>
-    <string name="movie_trailer_cd">Movie Trailer</string>
-    <string name="youtube_video">https://www.youtube.com/watch?v=</string>
-    <string name="youtube_site">YouTube</string>
-    <string name="user_reviews_tv">User Reviews:</string>
-    <string name="videos_label">Videos:</string>
-    <string name="order_criteria_favorite">xfavorite</string>
-    <string name="content_authority">com.tonietorres.popularmovies</string>
-    <string name="pref_favorite_key">xfavorite</string>
-    <string name="pref_favorite_label">Favorite</string>
-    <string name="extra_movie_id">extra_movie_id</string>
-    <string name="detail_activity_saved_instance_state_fav">Favorite</string>
-    <string name="detail_activity_saved_instance_state_movie">Movie</string>
     <string name="no_favorites_added">No favorite movies added</string>
+
+
+    <!-- YOUTUBE -->
+    <string name="youtube_video" translatable="false">https://www.youtube.com/watch?v=</string>
+    <string name="youtube_site" translatable="false">YouTube</string>
 
 </resources>

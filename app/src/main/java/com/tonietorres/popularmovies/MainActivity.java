@@ -42,7 +42,7 @@ MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<
         setContentView(R.layout.activity_main);
 
         mErrorMessage = findViewById(R.id.tv_error_message);
-        mRecyclerview = (RecyclerView) findViewById(R.id.movies_recyclerview);
+        mRecyclerview = findViewById(R.id.movies_recyclerview);
         mRecyclerview.setHasFixedSize(true);
         if (NetworkUtils.isOnline(this)) {
             mMoviesAdapter = new MoviesAdapter(this, this);
@@ -115,6 +115,9 @@ MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<
         startActivityForResult(intent, 1);
     }
 
+    /*
+        If favorite state of a movie is changed RESULT_OK code is returned, thus Loader is restarted
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == 1) {
@@ -151,6 +154,7 @@ MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<
             PREFERENCES_HAVE_BEEN_UPDATED = false;
         }
     }
+
 
     private String getPreferredOrderCriteria() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);

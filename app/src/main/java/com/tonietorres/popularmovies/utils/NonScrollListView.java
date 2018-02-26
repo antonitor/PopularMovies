@@ -6,7 +6,8 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 /**
- * Created by Toni on 21/02/2018.
+ * Customization of ListView that fixes its height so that it shows all its content, thus not
+ * allowing the scrolling
  */
 
 public class NonScrollListView extends ListView {

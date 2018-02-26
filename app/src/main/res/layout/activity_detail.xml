@@ -73,7 +73,8 @@
             app:layout_constraintStart_toEndOf="@+id/poster_detail"
             app:layout_constraintTop_toBottomOf="@+id/rating"
             app:srcCompat="@drawable/ic_no_fav"
-            android:onClick="onFavoriteButtonPressed"/>
+            android:onClick="onFavoriteButtonPressed"
+            android:contentDescription="@string/favorite_button_cd"/>
 
 
         <TextView

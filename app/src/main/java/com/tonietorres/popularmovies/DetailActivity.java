@@ -149,6 +149,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         }
     }
 
+    //Adds this movie to the favorite content provider
     private void addFavorite() {
         ContentResolver resolver = getContentResolver();
         ContentValues cv = new ContentValues();
@@ -158,11 +159,16 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         resolver.insert(MovieEntry.CONTENT_URI, cv);
     }
 
+    //Removes this movie from the favorite content provider
     private void removeFavorite() {
         ContentResolver resolver = getContentResolver();
         int rowsDeleted = resolver.delete(MoviesContract.buildMoviesUriWithId(mMovie.getId()), null, null);
     }
 
+    /*
+        When favorite button is pressed, check if this movie is already set as favorite, then store
+        or delete, and set the ImageButtn according to this.
+    */
     public void onFavoriteButtonPressed(View view) {
         if (!mFavoriteFlag) {
             mFavoriteFlag = true;
@@ -176,15 +182,24 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         setResult(RESULT_OK,getIntent());
     }
 
+    /*
+        This method is called whenever this Acrivity is created.
+        Checks if this movie is stored as favorite, and sets the flag and the ImageButton according
+        to this.
+     */
     private void setFavoriteFlag() {
         ContentResolver resolver = getContentResolver();
         Cursor cursor = resolver.query(MoviesContract.buildMoviesUriWithId(mMovie.getId()), null, null, null, null);
         if (cursor!=null && cursor.moveToNext()){
             mFavoriteFlag = true;
             setFavoriteButtonImage();
+            cursor.close();
         }
     }
 
+    /*
+        Sets the drawable on the ImageButton according to the favorite flag state
+     */
     private void setFavoriteButtonImage(){
         if (mFavoriteFlag) {
             mFavoriteButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_fav));
@@ -200,16 +215,19 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         mOverviewTV.setVisibility(View.INVISIBLE);
         mTitleTV.setVisibility(View.INVISIBLE);
         mFavoriteButton.setVisibility(View.INVISIBLE);
-        mErrorMessage.setText(message);
-        mErrorMessage.setVisibility(View.VISIBLE);
         mVideoLabel.setVisibility(View.INVISIBLE);
         mReviewLabel.setVisibility(View.INVISIBLE);
         separator1.setVisibility(View.INVISIBLE);
         separator2.setVisibility(View.INVISIBLE);
 
+        mErrorMessage.setText(message);
+        mErrorMessage.setVisibility(View.VISIBLE);
+
     }
 
     private void showMovieDetails() {
+        mErrorMessage.setVisibility(View.INVISIBLE);
+
         mPosterView.setVisibility(View.VISIBLE);
         mReleaseDateTV.setVisibility(View.VISIBLE);
         mRatingTV.setVisibility(View.VISIBLE);
@@ -220,7 +238,6 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         mFavoriteButton.setVisibility(View.VISIBLE);
         separator1.setVisibility(View.VISIBLE);
         separator2.setVisibility(View.VISIBLE);
-        mErrorMessage.setVisibility(View.INVISIBLE);
     }
 
 
